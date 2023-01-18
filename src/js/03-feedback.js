@@ -1,35 +1,42 @@
 import throttle from "lodash.throttle";
 
-const form = document.querySelector('.feedback-form');
-const email = document.querySelector('[name="email"]');
-const message = document.querySelector('[name="message"]');
 const KEY = 'feedback-form-state';
+let formSiteDate = {};
 
-form.addEventListener('input', throttle(onFormData, 500));
-form.addEventListener('submit', onFormSubmit);
-
-function onFormData(evt) {
-    const textIn = localStorage.setItem(KEY, JSON.stringify(formData));
-    const formData = { email: email.value, message: message.value };
+const formSite = {
+    form: document.querySelector('.feedback-form'),
+    email: document.querySelector('.feedback-form  email'),
+    message: document.querySelector('.feedback-form  message'),
 };
 
-function onFormSubmit(evt) {
-    evt.preventDefault();
-    evt.target.reset();
-    localStorage.removeItem(KEY);
-
-    const formData = { email: email.value, message: message.value };
-    console.log(formData);
-
-};
+formSite.form.addEventListener('input', throttle(storageFormData, 500));
+formSite.form.addEventListener('submit', onFormSubmit);
 
 updateInput();
 
-function updateInput(evt) {
-const savedInput = JSON.parse(localStorage.getItem(KEY))
-    if (savedInput) {
-        email.value = savedInput.email;
-        message.value = savedInput.message;
-    }
+function storageFormData(event) {
+    formSiteDate[event.target.name] = event.target.value.trim();
+    localStorage.setItem(KEY, JSON.stringify(formSiteDate));
+}
 
-};
+function onFormSubmit(event) {
+    event.preventDefault();
+
+    const savedSiteData = JSON.parse(localStorage.getItem(KEY));
+    console.log(savedSiteData);
+
+    event.currentTarget.reset();
+    localStorage.removeItem(KEY);
+    formSiteDate = {};
+}
+
+function updateInput() {
+    const savedSiteValues = localStorage.getItem(KEY);
+
+    if (savedSiteValues) {
+        formSiteDate = JSON.parse(savedSiteValues);
+        console.log(formSiteDate);
+        formSite.email.value = formSiteDate.email;
+        formSite.message.value = formSiteDate.message;
+    }
+}
