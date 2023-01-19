@@ -5,8 +5,8 @@ let formSiteDate = {};
 
 const formSite = {
     form: document.querySelector('.feedback-form'),
-    email: document.querySelector('.feedback-form  email'),
-    message: document.querySelector('.feedback-form  message'),
+    input: document.querySelector('.feedback-form  input'),
+    textarea: document.querySelector('.feedback-form  textarea'),
 };
 
 formSite.form.addEventListener('input', throttle(storageFormData, 500));
@@ -36,7 +36,7 @@ function updateInput() {
     if (savedSiteValues) {
         formSiteDate = JSON.parse(savedSiteValues);
         console.log(formSiteDate);
-        formSite.email.value = formSiteDate.email;
-        formSite.message.value = formSiteDate.message;
+        formSite.input.value = formSiteDate.email;
+        formSite.textarea.value = formSiteDate.message;
     }
 }
